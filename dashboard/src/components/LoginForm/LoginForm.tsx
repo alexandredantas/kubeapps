@@ -14,6 +14,7 @@ export interface ILoginFormProps {
   oauthLoginURI: string;
   authenticate: (cluster: string, token: string) => any;
   checkCookieAuthentication: (cluster: string) => void;
+  checkQueryParamAuthentication: (cluster: string, uri: string) => void;
   location: Location;
 }
 
@@ -28,6 +29,12 @@ class LoginForm extends React.Component<ILoginFormProps, ILoginFormState> {
     if (this.props.oauthLoginURI) {
       this.props.checkCookieAuthentication(this.props.cluster);
     }
+
+    const token = this.getTokenFromQueryParam();
+
+    if (token) {
+      this.props.checkQueryParamAuthentication(this.props.cluster, token);
+    }
   }
 
   public render() {
@@ -35,6 +42,10 @@ class LoginForm extends React.Component<ILoginFormProps, ILoginFormState> {
       return <LoadingWrapper />;
     }
     if (this.props.authenticated) {
+      if (this.getTokenFromQueryParam()) {
+        window.location.search = "";
+      }
+
       const { from } = (this.props.location.state as any) || { from: { pathname: "/" } };
       return <Redirect to={from} />;
     }
@@ -132,6 +143,11 @@ class LoginForm extends React.Component<ILoginFormProps, ILoginFormState> {
       </>
     );
   };
+
+  private getTokenFromQueryParam() {
+    const params = new URLSearchParams(window.location.search.toString());
+    return params.get("token");
+  }
 }
 
 export default LoginForm;

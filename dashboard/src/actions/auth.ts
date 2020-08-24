@@ -91,3 +91,21 @@ export function checkCookieAuthentication(
     }
   };
 }
+
+export function checkQueryParamAuthentication(
+  cluster: string,
+  token: string,
+): ThunkAction<Promise<void>, IStoreState, null, AuthAction> {
+  return async dispatch => {
+    // The call to authenticate below will also dispatch authenticating,
+    // but we dispatch it early so that the login screen is shown as
+    // loading while we query isAuthenticatedWithCookie().
+    dispatch(authenticating());
+    Auth.validateToken(cluster, token).then(
+      () => {
+        dispatch(authenticate(cluster, token, false));
+      },
+      () => dispatch(setAuthenticated(false, false, "")),
+    );
+  };
+}

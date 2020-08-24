@@ -17,6 +17,7 @@ export interface ILoginFormProps {
   oauthLoginURI: string;
   authenticate: (cluster: string, token: string) => any;
   checkCookieAuthentication: (cluster: string) => void;
+  checkQueryParamAuthentication: (cluster: string, uri: string) => void;
   appVersion: string;
   location: Location;
 }

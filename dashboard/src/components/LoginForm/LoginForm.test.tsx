@@ -24,6 +24,7 @@ const defaultProps = {
   authenticationError: undefined,
   location: emptyLocation,
   checkCookieAuthentication: jest.fn(),
+  checkQueryParamAuthentication: jest.fn(),
   oauthLoginURI: "",
 };
 

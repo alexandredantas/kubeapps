@@ -28,6 +28,8 @@ function mapDispatchToProps(dispatch: ThunkDispatch<IStoreState, null, Action>) 
       dispatch(actions.auth.authenticate(cluster, token, false)),
     checkCookieAuthentication: (cluster: string) =>
       dispatch(actions.auth.checkCookieAuthentication(cluster)),
+    checkQueryParamAuthentication: (cluster: string, token: string) =>
+      dispatch(actions.auth.checkQueryParamAuthentication(cluster, token)),
   };
 }
 
